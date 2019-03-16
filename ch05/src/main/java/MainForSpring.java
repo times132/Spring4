@@ -1,4 +1,5 @@
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
 import java.io.BufferedReader;
@@ -10,7 +11,7 @@ public class MainForSpring {
     private static ApplicationContext ctx = null;
 
     public static void main(String[] args) throws IOException{
-        ctx = new GenericXmlApplicationContext("classpath:applicationcontext.xml");
+        ctx = new AnnotationConfigApplicationContext(JavaConfig.class);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while(true){
             System.out.println("명령어를 입력하세요:");
@@ -35,7 +36,7 @@ public class MainForSpring {
             printHelp();
             return;
         }
-        MemberRegisterService regSvc = ctx.getBean("memberRegSvc", MemberRegisterService.class);
+        MemberRegisterService regSvc = ctx.getBean("memberRegisterSvc", MemberRegisterService.class);
         RegisterRequest req = new RegisterRequest();
         req.setEmail(arg[1]);
         req.setName(arg[2]);

@@ -10,7 +10,7 @@ public class MainForSpring {
     private static ApplicationContext ctx = null;
 
     public static void main(String[] args) throws IOException{
-        ctx = new GenericXmlApplicationContext("classpath:conf1.xml", "classpath:conf2.xml");
+        ctx = new GenericXmlApplicationContext("classpath:applicationcontext.xml");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while(true){
             System.out.println("명령어를 입력하세요:");
@@ -22,17 +22,8 @@ public class MainForSpring {
             if(command.startsWith("new")){
                 processNewCommand(command.split(" "));
                 continue;
-            }else if(command.startsWith("change")){
-                processChangeCommand(command.split(" "));
-                continue;
-            }else if(command.startsWith("list")){
-                processListCommand();
-                continue;
             }else if(command.startsWith("info")){
                 processInfoCommand(command.split(" "));
-                continue;
-            }else if(command.startsWith("version")){
-                processVersionCommand();
                 continue;
             }
             printHelp();
@@ -63,27 +54,6 @@ public class MainForSpring {
         }
     }
 
-    private static void processChangeCommand(String[] arg){
-        if(arg.length != 4){
-            printHelp();
-            return;
-        }
-        ChangePasswordService changePwdSvc = ctx.getBean("changePwdSvc", ChangePasswordService.class);
-        try{
-            changePwdSvc.changePassword(arg[1], arg[2], arg[3]);
-            System.out.println("암호를 변경했습니다.\n");
-        }catch (MemberNotFoundException e){
-            System.out.println("존재하지 않는 이메일입니다.\n");
-        }catch (IdPasswordNotMatchingException e){
-            System.out.println("이메일과 암호가 일치하지 않습니다.\n");
-        }
-    }
-
-    private static void processListCommand(){
-        MemberListPrinter listPrinter = ctx.getBean("listPrinter", MemberListPrinter.class);
-        listPrinter.printAll();
-    }
-
     private static void processInfoCommand(String[] arg){
         if(arg.length != 2){
             printHelp();
@@ -93,10 +63,6 @@ public class MainForSpring {
         infoPrinter.printMemberInfo(arg[1]);
     }
 
-    private static void processVersionCommand(){
-        VersionPrinter versionPrinter = ctx.getBean("versionPrinter", VersionPrinter.class);
-        versionPrinter.print();
-    }
 
     private static void printHelp(){
         System.out.println();

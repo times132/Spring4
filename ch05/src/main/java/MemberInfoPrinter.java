@@ -1,7 +1,7 @@
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class MemberInfoPrinter {
-    @Autowired
+
     private MemberDao memberDao;
     private MemberPrinter printer;
 
@@ -9,7 +9,6 @@ public class MemberInfoPrinter {
         this.memberDao = memberDao;
     }
 
-    @Autowired
     public void setPrinter(MemberPrinter printer){
         this.printer = printer;
     }
@@ -24,9 +23,12 @@ public class MemberInfoPrinter {
         System.out.println();
     }
 
-    @Autowired
     public void injectDependency(MemberDao memberDao, MemberPrinter printer){
         this.memberDao = memberDao;
         this.printer = printer;
+    }
+
+    public MemberDao getMemberDao(){ //test용
+        return memberDao;
     }
 }
